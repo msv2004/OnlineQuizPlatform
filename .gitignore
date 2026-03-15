@@ -2,9 +2,13 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 apache-maven/
 *.log
+server_log*.txt
+compile_errors.txt
 build_log.txt
 run_log.txt
 run_success.log
+seed_fix.sql
+/tmp/
 .DS_Store
 .idea/
 .vscode/

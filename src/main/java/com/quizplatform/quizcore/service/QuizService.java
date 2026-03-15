@@ -2,13 +2,16 @@ package com.quizplatform.quizcore.service;
 
 import com.quizplatform.quizcore.model.Category;
 import com.quizplatform.quizcore.model.Question;
+import com.quizplatform.quizcore.model.QuestionDTO;
 import com.quizplatform.quizcore.model.QuizResult;
+import com.quizplatform.quizcore.model.QuizResultDTO;
 import com.quizplatform.quizcore.model.User;
 import com.quizplatform.quizcore.repository.CategoryRepository;
 import com.quizplatform.quizcore.repository.QuestionRepository;
 import com.quizplatform.quizcore.repository.QuizResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +35,7 @@ public class QuizService {
 
     // A simple dynamic difficulty approach: fetch all questions, group by difficulty,
     // and attempt to serve a mix starting with EASY, moving to MEDIUM, then HARD.
-    public List<Question> getDynamicQuestions(Long categoryId, int count) {
+    public List<QuestionDTO> getDynamicQuestions(Long categoryId, int count) {
         List<Question> allQuestions = questionRepository.findByCategoryId(categoryId);
         if (allQuestions.isEmpty()) return Collections.emptyList();
 
@@ -41,7 +44,6 @@ public class QuizService {
 
         List<Question> result = new java.util.ArrayList<>();
 
-        // Very basic simple dynamic allocation algorithm:
         // Attempt to take 30% easy, 40% medium, 30% hard if possible.
         int easyCount = (int) (count * 0.3);
         int memCount = (int) (count * 0.4);
@@ -51,7 +53,7 @@ public class QuizService {
         result.addAll(takeRandom(byDifficulty.getOrDefault(Question.Difficulty.MEDIUM, Collections.emptyList()), memCount));
         result.addAll(takeRandom(byDifficulty.getOrDefault(Question.Difficulty.HARD, Collections.emptyList()), hardCount));
 
-        // If we didn't get enough (due to lack of questions in specific difficulties), fill with the rest
+        // If we didn't get enough, fill with the rest
         if (result.size() < count) {
             List<Question> remaining = new java.util.ArrayList<>(allQuestions);
             remaining.removeAll(result);
@@ -59,7 +61,7 @@ public class QuizService {
         }
 
         Collections.shuffle(result);
-        return result;
+        return result.stream().map(QuestionDTO::new).collect(Collectors.toList());
     }
 
     private List<Question> takeRandom(List<Question> list, int n) {
@@ -69,7 +71,8 @@ public class QuizService {
         return copy.subList(0, Math.min(n, copy.size()));
     }
 
-    public QuizResult submitQuiz(User user, Long categoryId, Map<Long, String> answers, int timeTakenSeconds) {
+    @Transactional
+    public QuizResultDTO submitQuiz(User user, Long categoryId, Map<Long, String> answers, int timeTakenSeconds) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
@@ -91,8 +94,13 @@ public class QuizService {
         quizResultRepository.save(result);
 
         // Async Email Trigger
-        emailService.sendQuizResultEmail(result);
+        try {
+            emailService.sendQuizResultEmail(result);
+        } catch (Exception e) {
+            // Log error but don't fail submission
+            System.err.println("Failed to send email: " + e.getMessage());
+        }
 
-        return result;
+        return new QuizResultDTO(result);
     }
 }

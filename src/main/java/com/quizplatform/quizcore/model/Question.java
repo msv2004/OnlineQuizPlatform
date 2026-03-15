@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "questions")
+@com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Question {
 
     @Id
@@ -37,6 +38,7 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     @NotNull
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private Category category;
 
     public enum QuestionType {
@@ -70,6 +72,7 @@ public class Question {
     public void setOptions(String options) { this.options = options; }
     public String getCorrectAnswer() { return correctAnswer; }
     public void setCorrectAnswer(String correctAnswer) { this.correctAnswer = correctAnswer; }
+    @com.fasterxml.jackson.annotation.JsonIgnore
     public Category getCategory() { return category; }
     public void setCategory(Category category) { this.category = category; }
 }

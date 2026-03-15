@@ -1,7 +1,7 @@
 package com.quizplatform.quizcore.controller;
 
-import com.quizplatform.quizcore.model.Question;
-import com.quizplatform.quizcore.model.QuizResult;
+import com.quizplatform.quizcore.model.QuestionDTO;
+import com.quizplatform.quizcore.model.QuizResultDTO;
 import com.quizplatform.quizcore.model.User;
 import com.quizplatform.quizcore.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,16 @@ public class QuizController {
 
     // Start a quiz by getting a dynamic batch of questions
     @GetMapping("/{categoryId}")
-    public ResponseEntity<List<Question>> startQuiz(@PathVariable Long categoryId, 
-                                                    @RequestParam(defaultValue = "10") int count) {
-        return ResponseEntity.ok(quizService.getDynamicQuestions(categoryId, count));
+    public ResponseEntity<?> startQuiz(@PathVariable Long categoryId, 
+                                       @RequestParam(defaultValue = "10") int count) {
+        try {
+            List<QuestionDTO> questions = quizService.getDynamicQuestions(categoryId, count);
+            return ResponseEntity.ok(questions);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Failed to load questions: " + e.getMessage());
+            return ResponseEntity.status(500).body(error);
+        }
     }
 
     // Submit answers and get the QuizResult
@@ -33,7 +40,7 @@ public class QuizController {
                                         @PathVariable Long categoryId,
                                         @RequestBody SubmitRequest request) {
         try {
-            QuizResult result = quizService.submitQuiz(user, categoryId, request.getAnswers(), request.getTimeTakenSeconds());
+            QuizResultDTO result = quizService.submitQuiz(user, categoryId, request.getAnswers(), request.getTimeTakenSeconds());
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             Map<String, String> error = new HashMap<>();
@@ -49,6 +56,7 @@ public class QuizController {
 
         public Map<Long, String> getAnswers() { return answers; }
         public void setAnswers(Map<Long, String> answers) { this.answers = answers; }
+        public int timeTakenSeconds() { return timeTakenSeconds; }
         public int getTimeTakenSeconds() { return timeTakenSeconds; }
         public void setTimeTakenSeconds(int timeTakenSeconds) { this.timeTakenSeconds = timeTakenSeconds; }
     }
