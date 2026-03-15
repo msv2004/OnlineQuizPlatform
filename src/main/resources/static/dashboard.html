@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Quiz Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Quiz Platform</div>
+        <div class="nav-links">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/leaderboard.html">Leaderboard</a>
+            <button id="logout-btn" class="btn btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <h2>Welcome, <span id="user-display-name">Student</span>!</h2>
+        <p>Select a category below to start your quiz.</p>
+
+        <div class="category-grid" id="category-container">
+            <!-- Categories injected here by JS -->
+        </div>
+    </div>
+    
+    <script src="js/dashboard.js"></script>
+    <script src="js/logout.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Session - Quiz Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Quiz Platform</div>
+        <div class="nav-links">
+            <span id="timer-display" class="timer">Time Left: <span id="time-left">05:00</span></span>
+        </div>
+    </nav>
+
+    <div class="container main-content" id="quiz-container">
+        <h2 id="quiz-title">Loading Quiz...</h2>
+        <form id="quiz-form">
+            <div id="questions-container">
+                 <!-- Questions injected dynamically -->
+            </div>
+            
+            <div class="form-actions mt-20" style="display: none;" id="action-buttons">
+                <button type="submit" class="btn btn-primary" id="submit-btn">Submit Exam</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Result Modal (Hidden initially) -->
+    <div id="result-overlay" class="overlay" style="display: none;">
+        <div class="modal">
+            <h2>Quiz Complete!</h2>
+            <p>Your Score: <span id="final-score"></span> / <span id="max-score"></span></p>
+            <p>Time Taken: <span id="final-time"></span> seconds</p>
+            <p>An email summary has been sent to your registered address.</p>
+            <button class="btn btn-primary mt-20" onclick="window.location.href='/dashboard.html'">Back to Dashboard</button>
+        </div>
+    </div>
+    
+    <script src="js/quiz.js"></script>
+</body>
+</html>

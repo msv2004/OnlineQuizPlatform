@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Quiz Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Admin Panel</div>
+        <div class="nav-links">
+            <a href="/dashboard.html">Dashboard</a>
+            <button id="logout-btn" class="btn btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container main-content admin-container">
+        <h2>Content Management</h2>
+        
+        <div class="admin-grid">
+            <!-- Add Category -->
+            <div class="admin-card">
+                <h3>Add New Category</h3>
+                <form id="add-category-form">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="cat-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="cat-desc">
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Add Category</button>
+                    <p id="cat-msg" class="success-msg"></p>
+                </form>
+            </div>
+            
+            <!-- Add Question -->
+            <div class="admin-card">
+                <h3>Add New Question</h3>
+                <form id="add-question-form">
+                    <div class="form-group">
+                        <label>Select Category</label>
+                        <select id="q-category" required>
+                            <!-- Injected by JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Question Text</label>
+                        <textarea id="q-text" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="q-type">
+                            <option value="MULTIPLE_CHOICE">Multiple Choice</option>
+                            <option value="TRUE_FALSE">True / False</option>
+                            <option value="FILL_BLANK">Fill in the Blank</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Difficulty</label>
+                        <select id="q-diff">
+                            <option value="EASY">Easy</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="HARD">Hard</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Options (Comma separated, for MCQ)</label>
+                        <input type="text" id="q-opts" placeholder="e.g. Paris, London, Rome">
+                    </div>
+                    <div class="form-group">
+                        <label>Correct Answer</label>
+                        <input type="text" id="q-correct" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Question</button>
+                    <p id="q-msg" class="success-msg"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script src="js/logout.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Quiz Platform</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Quiz Platform</div>
+        <div class="nav-links">
+            <a href="/dashboard.html">Dashboard</a>
+            <a href="/leaderboard.html" class="active">Leaderboard</a>
+            <button id="logout-btn" class="btn btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <h2>Top 50 Global Leaderboard</h2>
+        <p>Ranked by highest score and fastest completion time.</p>
+        
+        <table class="leaderboard-table mt-20">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>User</th>
+                    <th>Category</th>
+                    <th>Score</th>
+                    <th>Time Taken</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <tr><td colspan="5">Loading rankings...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="js/leaderboard.js"></script>
+    <script src="js/logout.js"></script>
+</body>
+</html>
